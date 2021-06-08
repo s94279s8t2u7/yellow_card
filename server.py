@@ -3,14 +3,6 @@ from flask import render_template
 from flask import request
 from flask_socketio import SocketIO,emit
 import json
-# jwt驗證
-from flask_jwt_extended import JWTManager
-
-jwt = JWTManager()
-
-# 設定 JWT 密鑰
-app.config['JWT_SECRET_KEY'] = 'this-should-be-change'
-jwt.init_app(app)
 
 # 讀入卡片
 with open("card.json","r",encoding="utf-8") as f:
