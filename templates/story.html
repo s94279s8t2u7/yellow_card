@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>story</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+</head>
+<style type="text/css">
+	body{
+		overflow: hidden;
+	}
+	.user{
+		position:absolute;
+		top: 20%;
+		left: 20%; 
+		width:200px; 
+		height:200px;
+		border: 1px groove;
+	}
+	.user_get{
+		position: relative;
+		top: 10px;
+		left: 10px;
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		line-height:23px;
+		border: 1px solid rgba(0,0,0,0.21);
+    	border-bottom: 4px solid rgba(0,0,0,0.21);
+   		border-radius: 4px;
+    	text-shadow: 0 1px 0 rgb(0 0 0 / 15%);
+	}
+	.card_position{
+		position: absolute;
+		bottom: 20%;
+		left: 20%;
+	}
+	.card{
+		margin: 10px;
+		float: left;
+		display: inline-block;
+		width: 100px;
+		height: 200px;
+		border: 1px groove;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  		transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	}
+	.card:hover {
+  		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	}
+	.card_box{
+		border: 1px groove;
+		height: 100%;
+		width: 1200px;
+	}
+	/* ------------------ */
+	/* 聊天室
+	/* ------------------ */
+	.major_glass {
+		position: absolute;
+		top: 2%;
+		left: 0%;
+		width: 18vh;
+		height: 4vh;
+		text-align: center;
+		opacity: 0.7;
+		line-height:4vh;
+		border-radius: 5px 70px 70px 5px;
+		-webkit-transition: .5s all;
+		background-color: #444444;
+		color: white;
+		font-size: 0.5cm;
+		overflow: hidden;
+	}
+	
+	.talk {
+		position: absolute;
+		top: 60%;
+		left: 0%;
+		width: 18vh;
+		height: 4vh;
+		text-align: center;
+		opacity: 0.7;
+		line-height:4vh;
+		border-radius: 5px 70px 70px 5px;
+		-webkit-transition: .5s all;
+		background-color: #444444;
+		color: white;
+		font-size: 0.5cm;
+		overflow: hidden;
+	}
+	
+	.chat_id {
+		position: absolute;
+		left: 0%;
+		width: 0vh;
+		height: 4vh;
+		text-align: center;
+		opacity: 0.5;
+		line-height: 4vh;
+		border-radius: 2px 20px 20px 2px;
+		-webkit-transition: .5s all;
+		background-color: #444444;
+		color: white;
+		font-size: 0.5cm;
+		overflow: hidden;
+	}
+	
+	.chat_id_up {
+		top: 54%;
+	}
+	
+	.chat_id_down {
+		top: 94%;
+	}
+	
+	.text_box {
+		position: fixed;
+		top: 5px;
+		right: 5px;
+		background-color: #DDDDDD;
+		border-radius: 10px;
+		width: 23%;
+		height: 96vh;
+		margin: 5px;
+	}
+	
+	.text_box_main {
+		width: 100%;
+		height: 58vh;
+		border-bottom:1px solid #AAAAAA;
+	}
+	
+	.text_box_chat {
+		width: 100%;
+		height: 37vh;
+	}
+	
+	.text_box_text_main {
+		height: 80%;
+		margin-bottom: 3px; 
+	}
+	
+	.text_box_text_chat {
+		height: 73%;
+		margin-bottom: 3px; 
+	}
+	
+	.text_input_main_box {
+		background-color: #FFFFFF;
+		bottom: 1%;
+		width: 100%;
+		height: 9.75vh;
+		border-radius: 5px;
+		padding: 2px;
+		resize:none;
+		border: none;
+	}
+	
+	.text_input_chat_box {
+		background-color: #FFFFFF;
+		width: 100%;
+		height: 8.5vh;
+		border-radius: 5px;
+		padding: 2px;
+		resize: none;
+		border: none;
+	}
+	
+	.scroll {
+		word-wrap: break-word;
+		overflow: auto;
+		overflow-x: hidden;
+	}
+	.text_0 {
+		display: inline;
+	}
+	
+	.text:hover {
+		-webkit-transition: .3s all;
+		color: 	#191970;
+	}
+	
+	.little_li {
+		width: 100%;
+		margin: 2px;
+		padding: 2px;
+		user-select: none;
+	}
+	
+	.client_text {
+		color: #00AAAA;
+		-webkit-transition: .5s all;
+	}
+	
+	.text {
+		user-select: none;
+		color: #666666;
+		-webkit-user-select: none;
+	}
+	
+	li {
+		list-style: none;
+	}
+	a:hover {
+		text-decoration: none;
+}
+</style>
+<script type="text/javascript">
+	// socket.emit('give_card');
+		// socket.on('connect', function() {
+		// socket.emit('connect_event', {data: 'connected!'});})
+		// socket.on('server_response', function(msg) {
+		// $('#log').append('<br>' + $('<div/>').text('Received #' + ': ' + msg.data).html());});
+		// $('form#emit').submit(function(event) {
+		// socket.emit('client_event', {data: $('#emit_data').val()});
+		// return false;});
+</script>
+<body>
+	<!-- 使用者名稱 -->
+	<div  class="user">
+		<form name='form' id='form' method="POST" >
+  		user：
+  			<input type='text'  id='name_input' name="username" placeholder="輸入名稱"/>：
+  			<div class="user_get" id="submit">login</div>
+  		</form>
+		
+		
+	</div>
+	<!-- 哪位玩家出牌 -->
+	<p id ="name_output"></p>
+	
+	<!-- 玩家持有卡片 -->
+	<button class="create_card" id="create_card">發牌</button>
+	<div class="card_position" id="card_position"></div>
+	<!-- 聊天室 -->
+	<div class="text_box">
+			<!-- 主要聊天室 -->
+		<div class="text_box_main scroll container">
+				<!-- 標籤 -->
+			<div class="major_glass" id="glass">主要</div>
+			<div class="chat_id chat_id_up" id="player_tag"><p></p></div>
+				<!-- 內文。接上資料庫後，此區塊會轉為陣列 -->
+			<div id="major_chat_lobby" class="text_box_text_main scroll">
+					
+			</div>
+				<!-- 文字輸入 -->
+			<textarea class="text_input_main_box" id="major_chat"></textarea>
+		</div>
+
+			<!-- 閒聊聊天室 -->
+		<div class="text_box_chat scroll container">
+				<!-- 標籤 -->
+			<div class="talk" id="talk">閒聊</div>
+			<div class="chat_id chat_id_down" id="player_tag_chat"><p></p></div>
+				<!-- 內文。接上資料庫後，此區塊會轉為陣列 -->
+			<div id="gossip_chat_lobby" class="text_box_text_chat scroll">
+					
+			</div>
+				<!-- 文字輸入 -->
+			<textarea class="text_input_chat_box" id="gossip_chat"></textarea>
+		</div>
+	</div>
+	<!-- 手牌 -->
+	<div id="hand_card" style="position: absolute; top:70%;left:10%;width:700px;
+	height: 200px; border: 1px groove; overflow-x:scroll; overflow-y:hidden;" >
+		<div class="card_box" id=card_box>
+		
+	</div>
+	
+
+</body>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		var url = 'http://127.0.0.1';
+		var port = '5000';
+		var socket = io.connect(url + ':' + port);
+		// 登入
+		$('#submit').click(function () {
+			socket.emit('new_user_login')
+  			$('#name_output')[0].innerHTML=$('#name_input')[0].value
+		})
+		// 發牌
+		var j=5;
+		$('#create_card').click(function () {
+			
+			socket.emit('get_card');
+		})
+		socket.on('give_user_card',function(card){
+			for(var i =0;i<9;i++){
+				$('#card_box').append("<span class='card'>"+card[0][i]+"</span>") 
+			}
+			
+		})
+
+		// 聊天室 尚未彈出角色名稱 (伺服器回應character_info_main)
+		$("#major_chat").click(function() {
+			document.getElementById("glass").style.width = "0px";
+			document.getElementById("player_tag").style.width = "30vh";
+			$("#player_tag").children("p").text($("#character_info_main").children("div").children("p").text());
+		});
+		$("#major_chat").blur(function() {
+			document.getElementById("glass").style.width = "18vh";
+			document.getElementById("player_tag").style.width = "0vh";
+		});
+
+		$("#gossip_chat").click(function() {
+			document.getElementById("talk").style.width = "0px";
+			document.getElementById("player_tag_chat").style.width = "30vh";
+			$("#player_tag_chat").children("p").text($("#character_info_main").children("div").children("p").text());
+		});
+
+		$("#gossip_chat").blur(function() {
+			document.getElementById("talk").style.width = "18vh";
+			document.getElementById("player_tag_chat").style.width = "0vh";
+		});
+    });
+</script>
+</html>
