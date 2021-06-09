@@ -18,6 +18,10 @@ socketio = SocketIO(app)
 def index():
     return render_template('story.html')
 
+# 登入
+@socketio.on('register')
+def register(account_data):
+	print(account_data)
 
 @socketio.on('new_user_login')
 def new_user_login():
@@ -25,7 +29,6 @@ def new_user_login():
 # 發牌
 @socketio.on('get_card')
 def get_card():
-	print(data)
 	socketio.emit('give_user_card',data)
 
 

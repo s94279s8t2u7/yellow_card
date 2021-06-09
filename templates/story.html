@@ -16,6 +16,7 @@
 	}
 	.user{
 		position:absolute;
+		display: block;
 		top: 30%;
 		left:45%; 
 		width:200px; 
@@ -243,17 +244,19 @@
 		// return false;});
 </script>
 	<!-- 使用者名稱 -->
-	<div  class="user">
+	<div  class="user" id="user">
 		<form name='form' id='form' method="POST" >
 		&nbsp&nbspuser：
-		<input type='text' class="register account" id='name_input' name="username" placeholder="account"/>
-		<input type='text' class="register password" id='name_input' name="username" placeholder="password"/>
-		<span class="user_get" id="submit">login</span></div>
+		<input type='text' class="register account" id='account' name="username" placeholder="account"/>
+		<input type='text' class="register password" id='password' name="username" placeholder="password"/>
+		<span class="user_get" id="login">login</span></div>
   		</form>
 		
 	</div>
+	<!-- 毛玻璃 -->
 	<div class="user_back">
 	</div>
+	<div style="position: absolute; left:50%;">name :<span id="user_name"></span></div>
 	<!-- 哪位玩家出牌 -->
 	<p id ="name_output"></p>
 	
@@ -303,6 +306,14 @@
 		var port = '5000';
 		var socket = io.connect(url + ':' + port);
 		// 登入
+		$('#login').click(function(){
+			var account= $('#account').val();
+			var password = $('#password').val();
+			account_data=[{"account" : account},{"password" : password}];
+			console.log(account_data);
+			socket.emit('register',account_data);
+			document.getElementById('user').style.display="none";
+		})
 		$('#submit').click(function () {
 			socket.emit('new_user_login')
   			$('#name_output')[0].innerHTML=$('#name_input')[0].value
