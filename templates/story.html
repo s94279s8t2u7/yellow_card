@@ -39,6 +39,7 @@
 		background-color:black;
 		opacity: 0.5;
 		z-index: 1;
+		display: block;
 	}
 	.user_get{
 		position: absolute;
@@ -254,11 +255,10 @@
 		
 	</div>
 	<!-- 毛玻璃 -->
-	<div class="user_back">
+	<div class="user_back" id="user_back">
 	</div>
-	<div style="position: absolute; left:50%;">name :<span id="user_name"></span></div>
+	<div style="position: absolute; left:50%;display: none;" id="name">name :<span id="user_name"></span></div>
 	<!-- 哪位玩家出牌 -->
-	<p id ="name_output"></p>
 	
 	<!-- 玩家持有卡片 -->
 	<button class="create_card" id="create_card">發牌</button>
@@ -313,6 +313,11 @@
 			console.log(account_data);
 			socket.emit('register',account_data);
 			document.getElementById('user').style.display="none";
+			document.getElementById('user_back').style.display="none";
+			// 確認完帳號存在後顯示在右上
+			socket.on('usernames', function(data){
+				console.log(123);
+			});
 		})
 		$('#submit').click(function () {
 			socket.emit('new_user_login')

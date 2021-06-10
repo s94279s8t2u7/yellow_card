@@ -21,6 +21,9 @@ def index():
 # 登入
 @socketio.on('register')
 def register(account_data):
+	with open("test.txt",'w') as f:
+		content="try it "
+		f.write(content)
 	print(account_data)
 
 @socketio.on('new_user_login')
