@@ -310,13 +310,15 @@
 			var account= $('#account').val();
 			var password = $('#password').val();
 			account_data=[{"account" : account},{"password" : password}];
-			console.log(account_data);
 			socket.emit('register',account_data);
 			document.getElementById('user').style.display="none";
 			document.getElementById('user_back').style.display="none";
 			// 確認完帳號存在後顯示在右上
 			socket.on('usernames', function(data){
-				console.log(123);
+				var name=data[0]['account'];
+				document.getElementById('name').style.display="block";	
+				$('#name').append('<span> '+name+' </span>');
+				
 			});
 		})
 		$('#submit').click(function () {

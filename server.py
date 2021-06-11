@@ -25,6 +25,7 @@ def register(account_data):
 		content="try it "
 		f.write(content)
 	print(account_data)
+	socketio.emit('usernames',account_data)
 
 @socketio.on('new_user_login')
 def new_user_login():
