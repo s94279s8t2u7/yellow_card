@@ -4,6 +4,8 @@ from flask import request
 from flask_socketio import SocketIO,emit
 import json
 
+
+# token
 # 讀入卡片
 with open("card.json","r",encoding="utf-8") as f:
 	data = json.load(f)
@@ -30,6 +32,10 @@ def register(account_data):
 @socketio.on('new_user_login')
 def new_user_login():
 	print('有人登入')
+# 題目
+@socketio.on('get_title')
+def get_title():
+	print('發題目')
 # 發牌
 @socketio.on('get_card')
 def get_card():

@@ -16,7 +16,7 @@
 	}
 	.user{
 		position:absolute;
-		display: block;
+		display: none;
 		top: 30%;
 		left:45%; 
 		width:200px; 
@@ -37,9 +37,9 @@
 		height: 100%;
 		width: 100%;
 		background-color:black;
-		opacity: 0.5;
+		opacity: 1;
 		z-index: 1;
-		display: block;
+		display: none;
 	}
 	.user_get{
 		position: absolute;
@@ -58,6 +58,25 @@
 	.user_get:hover{
 		background-color: turquoise;
 	}
+	/* 開始 */
+	.start_btn{
+		position: absolute;
+		top: 20%;
+		left: 30%;
+		width: 5%;
+		height: 5%;
+		border: 1px groove;
+	}
+	/* 題目 */
+	.title{
+		position: absolute;
+		top:30%;
+		left: 30%;
+		width: 15%;
+		height: 20%;
+		border: 1px groove;
+	}
+
 	.card_position{
 		position: absolute;
 		bottom: 20%;
@@ -260,6 +279,15 @@
 	<div style="position: absolute; left:50%;display: none;" id="name">name :<span id="user_name"></span></div>
 	<!-- 哪位玩家出牌 -->
 	
+	<!-- 題目 -->
+	<div class="start_btn" id="start_btn"> 
+		開始
+	</div>
+	<div class="title" id="title"> 
+
+	</div>
+
+
 	<!-- 玩家持有卡片 -->
 	<button class="create_card" id="create_card">發牌</button>
 	<div class="card_position" id="card_position"></div>
@@ -324,6 +352,10 @@
 		$('#submit').click(function () {
 			socket.emit('new_user_login')
   			$('#name_output')[0].innerHTML=$('#name_input')[0].value
+		})
+		// 取得題目
+		$('#start_btn').click(function(){
+			socket.emit('get_title')
 		})
 		// 發牌
 		var j=5;
